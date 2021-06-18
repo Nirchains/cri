@@ -24,12 +24,13 @@ class Helix3FeatureLogo {
 
 		$doc = JFactory::getDocument();
 		$extention = '';
+		$logopath = 'images/logos/iaic.svg';
 		//Retina Image
 		if( $this->helix3->getParam('logo_type') == 'image' ) {
 			jimport('joomla.image.image');
 
 			if( $this->helix3->getParam('logo_image') ) {
-				$path = JPATH_ROOT . '/' . $this->helix3->getParam('logo_image');
+				$path = JPATH_ROOT . '/' . $logopath;
 			} else {
 				$path = JPATH_ROOT . '/templates/' . $this->helix3->getTemplate() . '/images/presets/' . $this->helix3->Preset() . '/logo.png';
 			}
@@ -42,7 +43,7 @@ class Helix3FeatureLogo {
 			}
 
 			// Detecting SVG 
-			$extention = explode('.', $this->helix3->getParam('logo_image'));
+			$extention = explode('.', $logopath);
  			$extention = end($extention);
 			
 			// Fix for SVG image for logo
@@ -80,13 +81,13 @@ class Helix3FeatureLogo {
 		$sticky_logo_class = ($this->helix3->getParam('sticky_logo')) ? ' has-sticky-logo' : '';
 
 		if( $this->helix3->getParam('logo_type') == 'image' ) {
-			if( $this->helix3->getParam('logo_image') ) {
+			if( $logopath ) {
 				$html .= '<a class="logo" href="' . JURI::base(true) . '/">';
 				
 				if ($extention != 'svg') {
-				  $html .= '<img'. $header_container .' class="sp-default-logo'. $custom_logo_class . $sticky_logo_class .'" src="' . $this->helix3->getParam('logo_image') . '" alt="'. $sitename .'">';
+				  $html .= '<img'. $header_container .' class="sp-default-logo'. $custom_logo_class . $sticky_logo_class .'" src="' . $logopath . '" alt="'. $sitename .'">';
 				} else {
-					$html .= '<img class="'. $sticky_logo_class .'" style="width:100%;height:100%;" src="' . $this->helix3->getParam('logo_image') . '" alt="'. $sitename .'">';
+					$html .= '<img class="'. $sticky_logo_class .'" style="width:100%;height:100%;" src="' . $logopath . '" alt="'. $sitename .'">';
 				}
 				
 			// Detecting SVG for retina
