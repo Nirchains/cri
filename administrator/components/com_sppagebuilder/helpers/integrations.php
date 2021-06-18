@@ -26,7 +26,8 @@ class SppagebuilderHelperIntegrations {
 				'group' => 'spsimpleportfolio',
 				'name' => 'sppagebuilder',
 				'view' => 'item',
-				'id_alias' => 'id'
+				'id_alias' => 'id',
+				'frontend_only' => true,
 			),
 
 			'k2' => array(

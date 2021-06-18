@@ -14,12 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
-SppagebuilderHelper::loadAssets('css');
-
 $doc = Factory::getDocument();
+
+SppagebuilderHelper::loadAssets('css');
 $doc->addScriptdeclaration('var pagebuilder_base="' . JURI::root() . 'administrator/";');
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/media.js' );
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/utilities.js' );
+HTMLHelper::_('jquery.framework');
+SppagebuilderHelper::addScript('media.js');
 
 Text::script('COM_SPPAGEBUILDER_MEDIA_MANAGER_CONFIRM_DELETE');
 Text::script('COM_SPPAGEBUILDER_MEDIA_MANAGER_ENTER_DIRECTORY_NAME');

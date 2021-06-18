@@ -13,6 +13,9 @@ jimport('joomla.application.component.controller');
 //CSRF
 \JHtml::_('jquery.token');
 
+// Require helper file
+JLoader::register('SppagebuilderHelperSite', __DIR__ . '/helpers/helper.php');
+
 $controller = JControllerLegacy::getInstance('Sppagebuilder');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

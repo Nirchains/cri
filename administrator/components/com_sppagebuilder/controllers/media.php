@@ -70,7 +70,7 @@ class SppagebuilderControllerMedia extends JControllerForm {
 
           // File formats
           $accepted_file_formats = array(
-            'image' => array('jpg', 'jpeg', 'png', 'gif', 'svg','webp'),
+            'image' => array('jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'),
             'video' => array('mp4', 'mov', 'wmv', 'avi', 'mpg', 'ogv', '3gp', '3g2'),
             'audio' => array('mp3', 'm4a', 'ogg', 'wav'),
             'attachment' => array('pdf', 'doc', 'docx', 'key', 'ppt', 'pptx', 'pps', 'ppsx', 'odt', 'xls', 'xlsx', 'zip')
@@ -141,7 +141,7 @@ class SppagebuilderControllerMedia extends JControllerForm {
                 if($media_type == 'image') {
                   list($imgWidth, $imgHeight) = getimagesize($dest);
                   
-                  if(strtolower($ext) == 'svg') {
+                  if(strtolower($ext) == 'svg' || strtolower($ext) == 'webp') {
                     $report['src'] = JURI::root(true) . '/' . $src;
                   } else {
 

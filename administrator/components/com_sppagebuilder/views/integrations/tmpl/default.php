@@ -13,12 +13,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 
-HTMLHelper::_('jquery.framework');
-SppagebuilderHelper::loadAssets('css');
-
 $doc = Factory::getDocument();
+
+SppagebuilderHelper::loadAssets('css');
 $doc->addScriptdeclaration('var pagebuilder_base="' . JURI::root() . 'administrator/";');
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/integrations.js' );
+HTMLHelper::_('jquery.framework');
+SppagebuilderHelper::addScript('integrations.js');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/helpers/integrations.php';
 $integrations = SppagebuilderHelperIntegrations::integrations();

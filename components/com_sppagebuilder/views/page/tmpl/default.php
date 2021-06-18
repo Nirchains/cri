@@ -15,32 +15,31 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::_('jquery.framework');
-
-require_once ( JPATH_COMPONENT .'/parser/addon-parser.php' );
 $doc = Factory::getDocument();
 $user = Factory::getUser();
 $app = Factory::getApplication();
+
 $params = ComponentHelper::getParams('com_sppagebuilder');
 
 if ($params->get('fontawesome', 1))
 {
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css');
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-5.min.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-v4-shims.css');
 }
 
 if (!$params->get('disableanimatecss', 0))
 {
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/animate.min.css');
+	SppagebuilderHelperSite::addStylesheet('animate.min.css');
 }
 
 if (!$params->get('disablecss', 0))
 {
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/sppagebuilder.css');
+	SppagebuilderHelperSite::addStylesheet('sppagebuilder.css');
 }
 
-HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/jquery.parallax.js');
-HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/sppagebuilder.js', [], ['defer' => true]);
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/jquery.parallax.js', ['version' => SppagebuilderHelperSite::getVersion(true)] );
+HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/sppagebuilder.js', ['version' => SppagebuilderHelperSite::getVersion(true)], ['defer' => true]);
 
 $menus = $app->getMenu();
 $menu = $menus->getActive();
@@ -52,11 +51,12 @@ if ($menu)
 {
 	$menuClassPrefix 	= $menu->getParams()->get('pageclass_sfx');
 	$showPageHeading 	= $menu->getParams()->get('show_page_heading');
-	$menuheading 		= $menu->getParams()->get('page_heading');
+	$menuHeading 		= $menu->getParams()->get('page_heading');
 }
 
 $page = $this->item;
 
+require_once ( JPATH_COMPONENT .'/parser/addon-parser.php' );
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/builder/classes/addon.php';
 $page->text = SpPageBuilderAddonHelper::__($page->text);
 $content = json_decode($page->text);
@@ -67,14 +67,13 @@ if(isset($page->css) && $page->css)
 	$doc->addStyledeclaration($page->css);
 }
 
-$app = Factory::getApplication();
-$input = $app->input;
-$Itemid = $input->get('Itemid', 0, 'INT');
+// $input = $app->input;
+// $Itemid = $input->get('Itemid', 0, 'INT');
 
-$url = Route::_('index.php?option=com_sppagebuilder&view=form&layout=edit&tmpl=component&id=' . $page->id . '&Itemid=' . $Itemid);
-$root = Uri::base();
-$root = new Uri($root);
-$link = $root->getScheme() . '://' . $root->getHost() . (!in_array($root->getPort(),array(80,443)) ? ':'.$root->getPort() : ''). $url;
+// $url = Route::_('index.php?option=com_sppagebuilder&view=form&layout=edit&tmpl=component&id=' . $page->id . '&Itemid=' . $Itemid);
+// $root = Uri::base();
+// $root = new Uri($root);
+// $link = $root->getScheme() . '://' . $root->getHost() . (!in_array($root->getPort(),array(80,443)) ? ':'.$root->getPort() : ''). $url;
 ?>
 
 <div id="sp-page-builder" class="sp-page-builder <?php echo $menuClassPrefix; ?> page-<?php echo $page->id; ?>">
@@ -82,13 +81,7 @@ $link = $root->getScheme() . '://' . $root->getHost() . (!in_array($root->getPor
 	<?php if($showPageHeading) : ?>
 	<div class="page-header">
 		<h1 itemprop="name">
-			<?php
-			if($menuheading) {
-				echo $menuheading;
-			} else {
-				echo $page->title;
-			}
-			?>
+			<?php echo $menuHeading ? $menuHeading : $page->title; ?>
 		</h1>
 	</div>
 	<?php endif; ?>
@@ -96,12 +89,15 @@ $link = $root->getScheme() . '://' . $root->getHost() . (!in_array($root->getPor
 	<div class="page-content">
 		<?php $pageName = 'page-' . $page->id; ?>
 		<?php echo AddonParser::viewAddons( $content, 0, $pageName ); ?>
-		<?php
-		$authorised = $user->authorise('core.edit', 'com_sppagebuilder') || $user->authorise('core.edit', 'com_sppagebuilder.page.' . $page->id) || ($user->authorise('core.edit.own', 'com_sppagebuilder.page.' . $page->id) && $page->created_by == $user->id);
-		if ($authorised)
-		{
-			echo '<a class="sp-pagebuilder-page-edit" href="'. $link . '"><i class="fas fa-edit"></i> ' . Text::_('COM_SPPAGEBUILDER_PAGE_EDIT') . '</a>';
-		}
-		?>
+		
+		<?php if ($this->canEdit) : ?>
+		<a class="sp-pagebuilder-page-edit" href="<?php echo $this->checked_out ? $this->item->formLink : $this->item->link . '#'; ?>">
+			<?php if(!$this->checked_out) : ?>
+				<span class="fas fa-lock" area-hidden="true"></span> <?php echo Text::_('COM_SPPAGEBUILDER_PAGE_CHECKED_OUT'); ?>
+			<?php else: ?>
+				<span class="fas fa-edit" area-hidden="true"></span> <?php echo Text::_('COM_SPPAGEBUILDER_PAGE_EDIT'); ?>
+			<?php endif; ?>
+		</a>
+		<?php endif; ?>
 	</div>
 </div>

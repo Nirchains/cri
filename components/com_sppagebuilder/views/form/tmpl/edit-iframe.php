@@ -15,44 +15,38 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::_('jquery.framework');
-// JHtml::_('jquery.ui', array('core', 'sortable'));
-
-require_once JPATH_COMPONENT_ADMINISTRATOR .'/builder/classes/base.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR .'/builder/classes/config.php';
-
 $doc = Factory::getDocument();
 $app = Factory::getApplication();
 $params = ComponentHelper::getParams('com_sppagebuilder');
 
-$doc->addStylesheet(Uri::base(true) . '/administrator/components/com_sppagebuilder/assets/css/pbfont.css' );
+SppagebuilderHelperSite::addStylesheet('pbfont.css', 'admin');
 
 if ($params->get('fontawesome', 1))
 {
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css');
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-5.min.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-v4-shims.css');
 }
 
 if (!$params->get('disableanimatecss', 0))
 {
-	$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/animate.min.css');
+	SppagebuilderHelperSite::addStylesheet('animate.min.css');
 }
 
 if (!$params->get('disablecss', 0))
 {
-	$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/sppagebuilder.css');
+	SppagebuilderHelperSite::addStylesheet('sppagebuilder.css');
 }
 
-$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/medium-editor.min.css');
-$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/medium-editor-beagle.min.css');
-$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/edit-iframe.css');
+SppagebuilderHelperSite::addStylesheet('medium-editor.min.css');
+SppagebuilderHelperSite::addStylesheet('medium-editor-beagle.min.css');
+SppagebuilderHelperSite::addStylesheet('edit-iframe.css');
 
+HTMLHelper::_('jquery.framework');
 $doc->addScriptdeclaration('var pagebuilder_base="' . Uri::root() . '";');
-$doc->addScript(Uri::base(true). '/components/com_sppagebuilder/assets/js/medium-editor.min.js');
-$doc->addScript(Uri::base(true) . '/administrator/components/com_sppagebuilder/assets/js/script.js');
-$doc->addScript(Uri::base(true). '/components/com_sppagebuilder/assets/js/actions.js');
-$doc->addScript(Uri::base(true) . '/components/com_sppagebuilder/assets/js/jquery.parallax.js');
-$doc->addScript(Uri::base(true) . '/components/com_sppagebuilder/assets/js/sppagebuilder.js');
+SppagebuilderHelperSite::addScript('script.js', 'admin');
+SppagebuilderHelperSite::addScript('medium-editor.min.js');
+SppagebuilderHelperSite::addScript('jquery.parallax.js');
+SppagebuilderHelperSite::addScript('sppagebuilder.js');
 
 $menus = $app->getMenu();
 $menu = $menus->getActive();
@@ -66,6 +60,8 @@ if ($menu) {
 	$menuheading 		= $menu->getParams()->get('page_heading');
 }
 
+require_once JPATH_COMPONENT_ADMINISTRATOR .'/builder/classes/base.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR .'/builder/classes/config.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/builder/classes/addon.php';
 $this->item->text = SpPageBuilderAddonHelper::__($this->item->text, true);
 

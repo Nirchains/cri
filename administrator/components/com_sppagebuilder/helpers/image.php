@@ -79,11 +79,6 @@ class SppagebuilderHelperImage {
 			case 'jpg': imagejpeg($new, $dest, $quality); break;
 			case 'jpeg': imagejpeg($new, $dest, $quality); break;
 			case 'png': imagepng($new, $dest, floor($quality/11)); break;
-			case 'webp': 
-				if( function_exists('imagewebp') ){ 
-					imagewebp($new, $dest, $quality); 
-				}
-				break;
 		}
 	}
 
@@ -97,12 +92,6 @@ class SppagebuilderHelperImage {
 			case 'jpg': $img = imagecreatefromjpeg($this->src); break;
 			case 'jpeg': $img = imagecreatefromjpeg($this->src); break;
 			case 'png': $img = imagecreatefrompng($this->src); break;
-			case 'webp': 
-				if( function_exists('imagecreatefromwebp') )
-					$img = imagecreatefromwebp($this->src); 
-				else
-					$img = null;
-				break;
 		}
 		return $img;
 	}

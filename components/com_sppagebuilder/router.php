@@ -112,5 +112,5 @@ function SppagebuilderBuildRoute(&$query) {
 
 function SppagebuilderParseRoute($segments) {
 	$router = new SppagebuilderRouter;
-	return $router->parse($query);
+	return $router->parse($segments);
 }

@@ -136,8 +136,24 @@ class SppagebuilderAddonArticles extends SppagebuilderAddons{
 						} elseif ( isset($item->image_thumbnail) && $item->image_thumbnail ) {
 							//Lazyload image
 							$placeholder = $item->image_thumbnail == '' ? false : $this->get_image_placeholder($item->image_thumbnail);
+							
+							//Get image ALT text
+							$img_obj = json_decode($item->images);
+							$img_obj_helix = json_decode($item->attribs);
 
-							$output .= '<a href="'. $item->link .'" itemprop="url"><img class="sppb-img-responsive'.($placeholder && $page_view_name != 'form' ? ' sppb-element-lazy' : '').'" src="' . ($placeholder && $page_view_name != 'form' ? $placeholder : $item->image_thumbnail) . '" alt="'. $item->title .'" itemprop="thumbnailUrl" '.($placeholder && $page_view_name != 'form' ? 'data-large="'.$image.'"' : '').'  loading="lazy"></a>';
+							$img_blog_op_alt_text = (isset($img_obj->image_intro_alt) && $img_obj->image_intro_alt) ? $img_obj->image_intro_alt : "";
+							$img_helix_alt_text = (isset($img_obj_helix->helix_ultimate_image_alt_txt) && $img_obj_helix->helix_ultimate_image_alt_txt) ? $img_obj_helix->helix_ultimate_image_alt_txt : "";
+							$img_alt_text = "";
+
+							if($img_helix_alt_text){
+								$img_alt_text = $img_helix_alt_text;
+							} else if ($img_blog_op_alt_text) {
+								$img_alt_text = $img_blog_op_alt_text;
+							} else {
+								$img_alt_text = $item->title;
+							}
+
+							$output .= '<a href="'. $item->link .'" itemprop="url"><img class="sppb-img-responsive'.($placeholder && $page_view_name != 'form' ? ' sppb-element-lazy' : '').'" src="' . ($placeholder && $page_view_name != 'form' ? $placeholder : $item->image_thumbnail) . '" alt="'. $img_alt_text.'" itemprop="thumbnailUrl" '.($placeholder && $page_view_name != 'form' ? 'data-large="'.$image.'"' : '').'  loading="lazy"></a>';
 						}
 					} elseif( $resource != 'k2' &&  $item->post_format == 'video' && isset($item->video_src) && $item->video_src ) {
 						$output .= '<div class="entry-video embed-responsive embed-responsive-16by9">';
@@ -162,7 +178,23 @@ class SppagebuilderAddonArticles extends SppagebuilderAddons{
 							//Lazyload image
 							$default_placeholder = $image == '' ? false : $this->get_image_placeholder($image);
 
-							$output .= '<a class="sppb-article-img-wrap" href="'. $item->link .'" itemprop="url"><img class="sppb-img-responsive'.($default_placeholder && $page_view_name != 'form' ? ' sppb-element-lazy' : '').'" src="' . ($default_placeholder && $page_view_name != 'form' ? $default_placeholder : $image) . '" alt="'. $item->title .'" itemprop="thumbnailUrl" '.($default_placeholder && $page_view_name != 'form' ? 'data-large="'.$image.'"' : '').' loading="lazy"></a>';
+							//Get image ALT text
+							$img_obj = json_decode($item->images);
+							$img_obj_helix = json_decode($item->attribs);
+
+							$img_blog_op_alt_text = (isset($img_obj->image_intro_alt) && $img_obj->image_intro_alt) ? $img_obj->image_intro_alt : "";
+							$img_helix_alt_text = (isset($img_obj_helix->helix_ultimate_image_alt_txt) && $img_obj_helix->helix_ultimate_image_alt_txt) ? $img_obj_helix->helix_ultimate_image_alt_txt : "";
+							$img_alt_text = "";
+
+							if($img_helix_alt_text){
+								$img_alt_text = $img_helix_alt_text;
+							} else if ($img_blog_op_alt_text) {
+								$img_alt_text = $img_blog_op_alt_text;
+							} else {
+								$img_alt_text = $item->title;
+							}
+
+							$output .= '<a class="sppb-article-img-wrap" href="'. $item->link .'" itemprop="url"><img class="sppb-img-responsive'.($default_placeholder && $page_view_name != 'form' ? ' sppb-element-lazy' : '').'" src="' . ($default_placeholder && $page_view_name != 'form' ? $default_placeholder : $image) . '" alt="'. $img_alt_text .'" itemprop="thumbnailUrl" '.($default_placeholder && $page_view_name != 'form' ? 'data-large="'.$image.'"' : '').' loading="lazy"></a>';
 						}
 					}
 				}

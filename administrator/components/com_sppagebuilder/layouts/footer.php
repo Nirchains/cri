@@ -1,13 +1,14 @@
 <?php
-defined('_JEXEC') or die();
+/**
+ * @package SP Page Builder
+ * @author JoomShaper http://www.joomshaper.com
+ * @copyright Copyright (c) 2010 - 2020 JoomShaper
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
+*/
+//no direct accees
+defined('_JEXEC') or die ('Restricted access');
 
-$doc = JFactory::getDocument();
-$params = JComponentHelper::getParams('com_sppagebuilder');
-$input = JFactory::getApplication()->input; 
-
-$doc->addStyleSheet(JURI::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css');
-$doc->addStyleSheet(JUri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css');
-$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/common.css' );
+SppagebuilderHelper::addStylesheet('common.css');
 ?>
 <div class="pagebuilder-footer clearfix">
 	<div class="sp-pagebuilder-row">

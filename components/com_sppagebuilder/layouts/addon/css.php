@@ -360,9 +360,9 @@ if(isset($settings->title) && $settings->title) {
     $title_letterspace = (isset($settings->title_letterspace) && $settings->title_letterspace) ? $settings->title_letterspace : '';
     $custom_letterspacing = (isset($settings->custom_letterspacing) && $settings->custom_letterspacing) ? $settings->custom_letterspacing : '';
 
-    if($title_letterspace != 'custom'){
+    if($title_letterspace != 'custom' && (!empty($title_letterspace))){
         $title_style .= 'letter-spacing:' . $title_letterspace . ';';
-    } else {
+    } else if (!empty($custom_letterspacing)) {
         $title_style .= 'letter-spacing:' . $custom_letterspacing . ';';
     }
 

@@ -18,22 +18,20 @@ HTMLHelper::_('jquery.framework');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
 
-SppagebuilderHelper::loadAssets('css');
+$doc = Factory::getDocument();
+$app = JFactory::getApplication();
 
-$doc = Factory::getDocument();;
-$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/react-select.css' );
+//css
+SppagebuilderHelper::loadAssets('css');
+SppagebuilderHelper::addStylesheet('react-select.css');
 
 //js
 $doc->addScriptdeclaration('var pagebuilder_base="' . JURI::root() . '";');
-
 SppagebuilderHelper::loadEditor();
-
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/sidebar.js' );
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/script.js' );
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/actions.js' );
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/csslint.js' );
-
-$app = JFactory::getApplication();
+SppagebuilderHelper::addScript('sidebar.js');
+SppagebuilderHelper::addScript('script.js');
+SppagebuilderHelper::addScript('actions.js');
+SppagebuilderHelper::addScript('csslint.js');
 
 require_once JPATH_COMPONENT .'/builder/classes/base.php';
 require_once JPATH_COMPONENT .'/builder/classes/config.php';
@@ -208,4 +206,4 @@ if (!$this->item->text) {
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php echo JURI::base(true) . '/components/com_sppagebuilder/assets/js/engine.js'; ?>" defer></script>
+<script type="text/javascript" src="<?php echo JURI::base(true) . '/components/com_sppagebuilder/assets/js/engine.js?' . SppagebuilderHelper::getVersion(true); ?>" defer></script>

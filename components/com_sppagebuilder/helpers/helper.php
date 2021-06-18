@@ -8,6 +8,10 @@
 //no direct accees
 defined ('_JEXEC') or die ('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
 class SppagebuilderHelperSite {
 
 	public static function loadLanguage() {
@@ -92,6 +96,55 @@ class SppagebuilderHelperSite {
 		$htmlContent = str_replace('><', '> <', $htmlContent);
 
 		return trim(strip_tags($htmlContent));
+	}
+
+	public static function addScript( $script, $client = 'site', $version = true)
+	{
+		$doc = Factory::getDocument();
+
+		$script_url = Uri::base(true) . ($client == 'admin' ? '/administrator' : '') . '/components/com_sppagebuilder/assets/js/'. $script;
+		if($version)
+		{
+			$script_url .= '?' . self::getVersion(true);
+		}
+		$doc->addScript($script_url);
+	}
+
+	public static function addStylesheet( $stylesheet, $client = 'site', $version = true)
+	{
+		$doc = Factory::getDocument();
+
+		$stylesheet_url = Uri::base(true) . ($client == 'admin' ? '/administrator' : '') . '/components/com_sppagebuilder/assets/css/'. $stylesheet;
+		if($version)
+		{
+			$stylesheet_url .= '?' . self::getVersion(true);
+		}
+		$doc->addStylesheet($stylesheet_url);
+	}
+
+	public static function getVersion($md5 = false) {
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+		->select('e.manifest_cache')
+		->select($db->quoteName('e.manifest_cache'))
+		->from($db->quoteName('#__extensions', 'e'))
+		->where($db->quoteName('e.element') . ' = ' . $db->quote('com_sppagebuilder'));
+
+		$db->setQuery($query);
+		$manifest_cache = json_decode($db->loadResult());
+
+		if(isset($manifest_cache->version) && $manifest_cache->version)
+		{
+			
+			if($md5)
+			{
+				return md5($manifest_cache->version);
+			}
+
+			return $manifest_cache->version;
+		}
+
+		return '1.0';
 	}
 	
 }

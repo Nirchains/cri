@@ -101,22 +101,40 @@ echo json_encode($report); die;
 			$filename = basename($image);
 			$title = JFile::stripExt($filename);
 			$ext = JFile::getExt($filename);
-			$report['output'] .= '<li class="sp-pagebuilder-media-item" data-type="image" data-src="'. JURI::root(true) . '/' . $path .'" data-path="'. $path .'">';
 
-			$thumb = dirname($path) . '/_sp-pagebuilder_thumbs/' . basename($path);
-			if(file_exists(JPATH_ROOT . '/' . $thumb)) {
-				$thumbnail = JURI::root(true) . '/' . $thumb;
-			} else {
-				$thumbnail = JURI::root(true) . '/' . $path;
+			if($ext == 'pdf')
+			{
+				$box_class = 'attachment-pdf';
+				$icon_class = 'file-pdf-o';
+
+				$report['output'] .= '<li class="sp-pagebuilder-media-item" data-type="image" data-src="'. JURI::root(true) . '/' . $path .'" data-path="'. $path .'">';
+
+				$report['output'] .= '<div class="sp-pagebuilder-media-item-'. $box_class .'">';
+				$report['output'] .= '<div title="'.$filename.'" class="sp-pagebuilder-media-title">' . $filename .'</div>';
+				$report['output'] .= '<div class="sp-pagebuilder-media-item-preview"><i class="fa fa-'.$icon_class.'" area-hidden="true"></i></div>';
+				$report['output'] .= '</div>';
+	
+				$report['output'] .= '</li>';
 			}
-		
-			$report['output'] .= '<div class="sp-pagebuilder-media-item-image">';
-			$report['output'] .= '<div title="'.$filename.'" class="sp-pagebuilder-media-title">' . $title . '.' . $ext .'</div>';
-			$report['output'] .= '<div class="sp-pagebuilder-media-item-thumbnail" style="background-image: url('. $thumbnail .');"></div>';
-			$report['output'] .= '</div>';
+			else
+			{
+				$report['output'] .= '<li class="sp-pagebuilder-media-item" data-type="image" data-src="'. JURI::root(true) . '/' . $path .'" data-path="'. $path .'">';
 
-			$report['output'] .= '</li>';
-
+				$thumb = dirname($path) . '/_sp-pagebuilder_thumbs/' . basename($path);
+				if(file_exists(JPATH_ROOT . '/' . $thumb)) {
+					$thumbnail = JURI::root(true) . '/' . $thumb;
+				} else {
+					$thumbnail = JURI::root(true) . '/' . $path;
+				}
+			
+				$report['output'] .= '<div class="sp-pagebuilder-media-item-image">';
+				$report['output'] .= '<div title="'.$filename.'" class="sp-pagebuilder-media-title">' . $title . '.' . $ext .'</div>';
+				$report['output'] .= '<div class="sp-pagebuilder-media-item-thumbnail" style="background-image: url('. $thumbnail .');"></div>';
+				$report['output'] .= '</div>';
+	
+				$report['output'] .= '</li>';
+			}
+			
 		}
 	}
 

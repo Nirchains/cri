@@ -16,54 +16,39 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::_('jquery.framework');
-
 require_once JPATH_COMPONENT_ADMINISTRATOR .'/builder/classes/base.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR .'/builder/classes/config.php';
-
-JLoader::register('SppagebuilderHelper', JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/helpers/sppagebuilder.php');
-
-if(!class_exists('SppagebuilderHelper'))
-{
-	require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/sppagebuilder.php';
-}
-
-if(!class_exists('SppagebuilderHelperSite'))
-{
-	require_once JPATH_ROOT . '/components/com_sppagebuilder/helpers/helper.php';
-}
 
 $doc = Factory::getDocument();
 $app = Factory::getApplication();
 $params = ComponentHelper::getParams('com_sppagebuilder');
-$doc->addStylesheet(Uri::base(true) . '/administrator/components/com_sppagebuilder/assets/css/pbfont.css' );
+
+SppagebuilderHelperSite::addStylesheet('pbfont.css', 'admin');
 
 if ($params->get('fontawesome', 1))
 {
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css');
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-5.min.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-v4-shims.css');
 }
 
 if (!$params->get('disableanimatecss', 0))
 {
-	$doc->addStyleSheet(Uri::base(true) . '/components/com_sppagebuilder/assets/css/animate.min.css');
+	SppagebuilderHelperSite::addStylesheet('animate.min.css');
 }
 
 if (!$params->get('disablecss', 0))
 {
-	$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/sppagebuilder.css');
+	SppagebuilderHelperSite::addStylesheet('sppagebuilder.css');
 }
 
-$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/react-select.css');
-$doc->addStyleSheet(Uri::base(true).'/components/com_sppagebuilder/assets/css/edit.css');
+SppagebuilderHelperSite::addStylesheet('react-select.css');
+SppagebuilderHelperSite::addStylesheet('edit.css');
 
+HTMLHelper::_('jquery.framework');
 $doc->addScriptdeclaration('var pagebuilder_base="' . Uri::root() . '";');
-
 SppagebuilderHelper::loadEditor();
-
-$doc->addScript(Uri::base(true). '/components/com_sppagebuilder/assets/js/actions.js');
-
-$doc->addScript(Uri::base(true) . '/components/com_sppagebuilder/assets/js/csslint.js');
+SppagebuilderHelperSite::addScript('actions.js');
+SppagebuilderHelperSite::addScript('csslint.js');
 
 if($this->item->extension == 'com_content' && $this->item->extension_view == 'article')
 {
@@ -149,7 +134,7 @@ $doc->addScriptdeclaration('var articleCats=' . json_encode( $article_cats ) . '
 $doc->addScriptdeclaration('var moduleAttr=' . json_encode( $moduleAttr ) . ';');
 $doc->addScriptdeclaration('var rowSettings=' . json_encode( $rowSettings ) . ';');
 $doc->addScriptdeclaration('var colSettings=' . json_encode( $columnSettings ) . ';');
-$doc->addScriptdeclaration('var sppbVersion="' . SppagebuilderHelper::getVersion() . '";');
+$doc->addScriptdeclaration('var sppbVersion="' . SppagebuilderHelperSite::getVersion() . '";');
 
 // Media
 $mediaParams = JComponentHelper::getParams('com_media');
@@ -726,4 +711,4 @@ foreach ($addons_list as $addon) {
 }
 ?>
 
-<script type="text/javascript" src="<?php echo JURI::base(true) . '/components/com_sppagebuilder/assets/js/engine.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo JURI::base(true) . '/components/com_sppagebuilder/assets/js/engine.js?' . SppagebuilderHelperSite::getVersion(true) ; ?>"></script>

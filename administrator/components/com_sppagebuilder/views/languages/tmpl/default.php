@@ -14,11 +14,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
-SppagebuilderHelper::loadAssets('css');
-
 $doc = Factory::getDocument();
+
+SppagebuilderHelper::loadAssets('css');
 $doc->addScriptdeclaration('var pagebuilder_base="' . JURI::root() . 'administrator/";');
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/languages.js' );
+HTMLHelper::_('jquery.framework');
+SppagebuilderHelper::addScript('languages.js');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/helpers/languages.php';
 $languages = SppagebuilderHelperLanguages::language_list();

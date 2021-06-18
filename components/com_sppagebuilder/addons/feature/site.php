@@ -2,7 +2,7 @@
 /**
  * @package SP Page Builder
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2020 JoomShaper
+ * @copyright Copyright (c) 2010 - 2021 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 //no direct accees
@@ -710,7 +710,9 @@ class SppagebuilderAddonFeature extends SppagebuilderAddons {
 					heading_class = " sppb-media-heading";
 				}
 
-				feature_title += \'<\'+data.heading_selector+\' class="sppb-addon-title sppb-feature-box-title  \'+heading_class+\'">\';
+				let heading_selector = data.heading_selector || "h3";
+
+				feature_title += \'<\'+heading_selector+\' class="sppb-addon-title sppb-feature-box-title  \'+heading_class+\'">\';
 				if( (data.title_url && data.url_appear == "title") || (data.title_url && data.url_appear == "both" ) ){
 					feature_title += \'<a href="\'+data.title_url+\'" class="sp-inline-editable-element" data-id="\'+data.id+\'" data-fieldName="title" contenteditable="true">\';
 				}
@@ -724,7 +726,7 @@ class SppagebuilderAddonFeature extends SppagebuilderAddons {
 				if( (data.title_url && data.url_appear == "title") || (data.title_url && data.url_appear == "both" ) ){
 					feature_title += \'</a>\';
 				}
-				feature_title += \'</\'+data.heading_selector+\'>\';
+				feature_title += \'</\'+heading_selector+\'>\';
 			}
 
 			var feature_text  = \'<div id="addon-text-\'+data.id+\'" class="sppb-addon-text sp-editable-content" data-id="\'+data.id+\'" data-fieldName="text">\';

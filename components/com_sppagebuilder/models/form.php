@@ -9,22 +9,11 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Registry\Registry;
-use Joomla\Utilities\ArrayHelper;
+JLoader::register('SppagebuilderHelperRoute', JPATH_ROOT . '/components/com_sppagebuilder/helpers/route.php');
 
 // Base this model on the backend version.
-require_once JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/models/page.php';
+JLoader::register('SppagebuilderModelPage', JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/models/page.php');
 
-if(!class_exists('SppagebuilderHelperSite'))
-{
-	require_once JPATH_ROOT . '/components/com_sppagebuilder/helpers/helper.php';
-}
-
-/**
- * Content Component Article Model
- *
- * @since  1.5
- */
 class SppagebuilderModelForm extends SppagebuilderModelPage
 {
 	protected $_context = 'com_sppagebuilder.page';
@@ -45,28 +34,6 @@ class SppagebuilderModelForm extends SppagebuilderModelPage
 		}
 
 		$this->setState('filter.language', JLanguageMultilang::isEnabled());
-	}
-
-	public function getForm($data = array(), $loadData = true) {
-			return parent::getForm();
-	}
-
-	public function save($data) {
-		$attribs = array();
-		
-		if(isset($data['meta_description']) && $data['meta_description'])
-		{
-			$attribs['meta_description'] = $data['meta_description'];
-		}
-		
-		if(isset($data['meta_keywords']) && $data['meta_keywords'])
-		{
-			$attribs['meta_keywords'] = $data['meta_keywords'];
-		}
-
-		$data['attribs'] = json_encode($attribs);
-
-		return parent::save($data);
 	}
 
 	public function getItem( $pageId = null )
@@ -130,6 +97,10 @@ class SppagebuilderModelForm extends SppagebuilderModelPage
 					$attribs = new stdClass;
 				}
 
+				$data->link = SppagebuilderHelperRoute::getPageRoute($data->id, $data->language);
+				$data->formLink = SppagebuilderHelperRoute::getFormRoute($data->id, $data->language);
+				
+				//
 				$data->meta_description = (isset($attribs->meta_description) && $attribs->meta_description) ? $attribs->meta_description : '';
 				$data->meta_keywords = (isset($attribs->meta_keywords) && $attribs->meta_keywords) ? $attribs->meta_keywords : '';
 
@@ -159,6 +130,43 @@ class SppagebuilderModelForm extends SppagebuilderModelPage
 		}
 
 		return $this->_item[$pageId];
+	}
+
+	public function getForm($data = array(), $loadData = true) {
+		$app = JFactory::getApplication();
+		$user = JFactory::getUser();
+
+		// Get the form.
+		$form = $this->loadForm('com_sppagebuilder.page', 'page', array('control' => 'jform', 'load_data' => $loadData));
+
+		if (empty($form))
+		{
+			return false;
+		}
+
+		// Manually check-out
+		$pageId = (!empty($pageId))? $pageId : (int)$this->getState('page.id');
+		$this->checkout($pageId);
+
+		return parent::getForm();
+	}
+
+	public function save($data) {
+		$attribs = array();
+		
+		if(isset($data['meta_description']) && $data['meta_description'])
+		{
+			$attribs['meta_description'] = $data['meta_description'];
+		}
+		
+		if(isset($data['meta_keywords']) && $data['meta_keywords'])
+		{
+			$attribs['meta_keywords'] = $data['meta_keywords'];
+		}
+
+		$data['attribs'] = json_encode($attribs);
+
+		return parent::save($data);
 	}
 
 	public function getMenuByPageId($pageId = 0) {

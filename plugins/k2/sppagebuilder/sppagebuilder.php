@@ -78,19 +78,22 @@ class plgK2Sppagebuilder extends K2Plugin
 		$input = JFactory::getApplication()->input;
 		$option = $input->get('option', '', 'STRING');
 		$view = $input->get('view', '', 'STRING');
-
-		$isSppagebuilderEnabled = $this->isSppagebuilderEnabled();
-
-		if ( $isSppagebuilderEnabled )
+		
+		if(isset($item->id) && $item->id)
 		{
-			if (SppagebuilderHelper::onIntegrationPrepareContent($item->text, $option, $view, $item->id))
+			$isSppagebuilderEnabled = $this->isSppagebuilderEnabled();
+			if ( $isSppagebuilderEnabled )
 			{
-				$item->text = SppagebuilderHelper::onIntegrationPrepareContent($item->text, $option, $view, $item->id);
+				if (SppagebuilderHelper::onIntegrationPrepareContent($item->text, $option, $view, $item->id))
+				{
+					$item->text = SppagebuilderHelper::onIntegrationPrepareContent($item->text, $option, $view, $item->id);
+				}
 			}
 		}
 	}
 
-  	private function isSppagebuilderEnabled(){
+	  private function isSppagebuilderEnabled()
+	  {
     	$db = JFactory::getDbo();
     	$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_sppagebuilder' AND type = 'component'");
     	return $is_enabled = $db->loadResult();

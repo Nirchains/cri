@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.6" type="plugin" group="k2" method="upgrade">
+<extension version="3.9" type="plugin" group="k2" method="upgrade">
 	<name>K2 - SP Page Builder</name>
 	<author>Joomla! Project</author>
 	<author>JoomShaper.com</author>
@@ -8,7 +8,7 @@
     <license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later</license>
     <authorEmail>support@joomshaper.com</authorEmail>
     <authorUrl>www.joomshaper.com</authorUrl>
-    <version>1.3</version>
+    <version>1.4</version>
     <description>SP Page Builder System plugin to add support for 3rd party components</description>
 	<files>
 		<filename plugin="sppagebuilder">sppagebuilder.php</filename>

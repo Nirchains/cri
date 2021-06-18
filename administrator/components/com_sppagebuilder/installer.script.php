@@ -2,7 +2,7 @@
 /**
 * @package SP Page Builder
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2020 JoomShaper
+* @copyright Copyright (c) 2010 - 2021 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 //no direct accees
@@ -53,7 +53,7 @@ class com_sppagebuilderInstallerScript
             }
         }
 
-        // Uninstal Modules
+        // Uninstall Modules
         $modules = $manifest->xpath('modules/module');
         foreach ($modules as $module)
         {
@@ -75,25 +75,6 @@ class com_sppagebuilderInstallerScript
         }
     }
 
-
-    /**
-    * method to run before an install/update/uninstall method
-    *
-    * @return void
-    */
-
-    public function preflight($type, $parent) {
-        // Remove Free Updater
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $conditions = array($db->quoteName('location') . ' = ' . $db->quote('http://www.joomshaper.com/updates/com-sp-page-builder-free.xml'));
-        $query->delete($db->quoteName('#__update_sites'));
-        $query->where($conditions);
-        $db->setQuery($query);
-        $db->execute();
-    }
-
-
     /**
     * method to run after an install/update/uninstall method
     *
@@ -101,6 +82,12 @@ class com_sppagebuilderInstallerScript
     */
 
     public function postflight($type, $parent) {
+
+        if ($type == 'uninstall')
+        {
+            return true;
+        }
+
         $db = JFactory::getDbo();
         $status = new stdClass;
         $status->modules = array();
@@ -144,8 +131,16 @@ class com_sppagebuilderInstallerScript
             $name = (string)$module->attributes()->module;
             $client = (string)$module->attributes()->client;
             $path = $src . '/modules/' . $client . '/' . $name;
+            
+            $activate = (string)$module->attributes()->activate;
             $position = (isset($module->attributes()->position) && $module->attributes()->position) ? (string)$module->attributes()->position : '';
             $ordering = (isset($module->attributes()->ordering) && $module->attributes()->ordering) ? (string)$module->attributes()->ordering : 0;
+            $platform = (isset($module->attributes()->platform) && $module->attributes()->platform) ? (string)$module->attributes()->platform : 'universal';
+
+            if($platform == 'joomla3' && JVERSION >= 4)
+            {
+                return;
+            }
 
             $installer = new JInstaller;
             $result = $installer->install($path);
@@ -174,7 +169,7 @@ class com_sppagebuilderInstallerScript
                 $db->setQuery($query);
                 $db->execute();
 
-                // Retrive ID
+                // Retrieve ID
                 $db = JFactory::getDbo();
                 $query = $db->getQuery(true);
                 $query->select($db->quoteName(array('id')));
@@ -189,11 +184,6 @@ class com_sppagebuilderInstallerScript
                     $db->execute();
                 }
             }
-        }
-
-        if ($type == 'uninstall')
-        {
-            return true;
         }
     }
 }

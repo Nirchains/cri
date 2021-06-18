@@ -9,8 +9,10 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 
 JLoader::register('SppagebuilderHelperIntegrations', JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/helpers/integrations.php');
 
@@ -55,6 +57,32 @@ abstract class SppagebuilderHelper {
 		);		
 	}
 
+	public static function addScript($script, $client = 'admin', $version = true)
+	{
+		$doc = Factory::getDocument();
+
+		$script_url = Uri::root(true) . ($client == 'admin' ? '/administrator' : '') . '/components/com_sppagebuilder/assets/js/'. $script;
+		if($version)
+		{
+			$script_url .= '?' . self::getVersion(true);
+		}
+
+		$doc->addScript($script_url);
+	}
+
+	public static function addStylesheet($stylesheet, $client = 'admin', $version = true)
+	{
+		$doc = Factory::getDocument();
+		$stylesheet_url = Uri::root(true) . ($client == 'admin' ? '/administrator' : '') . '/components/com_sppagebuilder/assets/css/'. $stylesheet;
+
+		if($version)
+		{
+			$stylesheet_url .= '?' . self::getVersion(true);
+		}
+
+		$doc->addStylesheet($stylesheet_url);
+	}
+
 	public static function loadAssets($type = 'all')
 	{
 		$doc = Factory::getDocument();
@@ -62,13 +90,14 @@ abstract class SppagebuilderHelper {
 
 		if($type == 'all' || $type == 'css')
 		{
-			$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css' );
-			$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css' );
-			$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/pbfont.css' );
-			$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/sppagebuilder.css' );
+			self::addStylesheet('font-awesome-5.min.css', 'site');
+			self::addStylesheet('font-awesome-v4-shims.css', 'site');
+			self::addStylesheet('pbfont.css');
+			self::addStylesheet('sppagebuilder.css');
+
 			if (JVERSION < 4)
 			{
-				$doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/joomla3.css' );
+				self::addStylesheet('joomla3.css');
 			}
 		}
 
@@ -82,7 +111,7 @@ abstract class SppagebuilderHelper {
 		
 		if(JVERSION < 4)
 		{
-			$doc->addScript(JURI::root(true) . '/media/editors/tinymce/tinymce.min.js');
+			$doc->addScript(Uri::root(true) . '/media/editors/tinymce/tinymce.min.js');
 			$doc->addScriptdeclaration('var tinyTheme="modern";');
 		}
 		else
@@ -121,7 +150,7 @@ abstract class SppagebuilderHelper {
 		}
 	}
 
-	public static function getVersion() {
+	public static function getVersion($md5 = false) {
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
 		->select('e.manifest_cache')
@@ -132,7 +161,14 @@ abstract class SppagebuilderHelper {
 		$db->setQuery($query);
 		$manifest_cache = json_decode($db->loadResult());
 
-		if(isset($manifest_cache->version) && $manifest_cache->version) {
+		if(isset($manifest_cache->version) && $manifest_cache->version)
+		{
+			
+			if($md5)
+			{
+				return md5($manifest_cache->version);
+			}
+
 			return $manifest_cache->version;
 		}
 
@@ -147,7 +183,7 @@ abstract class SppagebuilderHelper {
 
 		$attribs['css'] = '';
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		
 		if(self::checkPage($attribs['option'], $attribs['view'], $attribs['id'])) {
 
@@ -213,21 +249,28 @@ abstract class SppagebuilderHelper {
 		if($page_content) {
 			jimport('joomla.application.component.helper');
 			require_once JPATH_ROOT .'/components/com_sppagebuilder/parser/addon-parser.php';
-			JHtml::_('jquery.framework');
-			$doc = JFactory::getDocument();
-			$params = JComponentHelper::getParams('com_sppagebuilder');
-			if ($params->get('fontawesome',1)) {
-				$doc->addStyleSheet(JUri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css');
-				$doc->addStyleSheet(JUri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css');
+			$doc = Factory::getDocument();
+			$params = ComponentHelper::getParams('com_sppagebuilder');
+			
+			if ($params->get('fontawesome',1))
+			{
+				self::addStylesheet('font-awesome-5.min.css', 'site');
+				self::addStylesheet('font-awesome-v4-shims.css', 'site');
 			}
-			if (!$params->get('disableanimatecss',0)) {
-				$doc->addStyleSheet(JUri::base(true) . '/components/com_sppagebuilder/assets/css/animate.min.css');
+			
+			if (!$params->get('disableanimatecss',0))
+			{
+				self::addStylesheet('animate.min.css', 'site');
 			}
-			if (!$params->get('disablecss',0)) {
-				$doc->addStyleSheet(JUri::base(true) . '/components/com_sppagebuilder/assets/css/sppagebuilder.css');
+			
+			if (!$params->get('disablecss',0))
+			{
+				self::addStylesheet('sppagebuilder.css', 'site');
 			}
-			$doc->addScript(JUri::base(true).'/components/com_sppagebuilder/assets/js/jquery.parallax.js');
-			$doc->addScript(JUri::base(true).'/components/com_sppagebuilder/assets/js/sppagebuilder.js');
+
+			HTMLHelper::_('jquery.framework');
+			HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/jquery.parallax.js', ['version' => SppagebuilderHelperSite::getVersion(true)] );
+			HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/sppagebuilder.js', ['version' => SppagebuilderHelperSite::getVersion(true)], ['defer' => true]);
 
 			return '<div id="sp-page-builder" class="sp-page-builder sppb-'.$view.'-page-wrapper"><div class="page-content">' . AddonParser::viewAddons(json_decode($page_content->text),0,$pageName) . '</div></div>';
 		}

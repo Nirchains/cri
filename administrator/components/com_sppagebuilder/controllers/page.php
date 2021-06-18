@@ -208,8 +208,6 @@ class SppagebuilderControllerPage extends JControllerForm {
 
 				// Redirect back to the edit screen.
 				$output['redirect'] = 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($recordId);
-				// $siteApp = JApplication::getInstance('site');
-				// $router = $siteApp->getRouter();
 
 				// Language
 				$lang_code = (isset($data['language']) && $data['language'] && explode('-',$data['language'])[0])? explode('-',$data['language'])[0] : '';
@@ -330,10 +328,9 @@ class SppagebuilderControllerPage extends JControllerForm {
 		if($view_id && $title) {
 			$id = $model->createBrandNewPage($title, $extension, $extension_view, $view_id);
 			$pageId = $id;
-			// $appSite = JApplication::getInstance('site');
-			// $router = $appSite->getRouter();
+			
 			$front_link = 'index.php?option=com_sppagebuilder&view=form&tmpl=component&layout=edit&extension='. $extension .'&extension_view='. $extension_view .'&id=' . $pageId;
-			$sefURI = str_replace('/administrator', '', Route::build($front_link));
+			$sefURI = str_replace('/administrator', '', SppagebuilderHelperRoute::buildRoute($front_link));
 			$output['status'] = true;
 			$output['url'] = $sefURI;
 			die(json_encode($output));

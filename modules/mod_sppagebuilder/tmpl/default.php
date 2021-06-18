@@ -8,18 +8,34 @@
 //no direct accees
 defined ('_JEXEC') or die ('restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
+JLoader::register('SppagebuilderHelperSite', JPATH_SITE . '/components/com_sppagebuilder/helpers/helper.php');
 require_once JPATH_ROOT .'/components/com_sppagebuilder/parser/addon-parser.php';
 $doc = JFactory::getDocument();
 $input = JFactory::getApplication()->input;
-$sppb_param = JComponentHelper::getParams('com_sppagebuilder');
-if ($sppb_param->get('fontawesome',1)) {
-	$doc->addStyleSheet(JURI::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-5.min.css');
-	$doc->addStyleSheet(JUri::base(true) . '/components/com_sppagebuilder/assets/css/font-awesome-v4-shims.css');
+$component_params = ComponentHelper::getParams('com_sppagebuilder');
+
+if ($component_params->get('fontawesome', 1))
+{
+	SppagebuilderHelperSite::addStylesheet('font-awesome-5.min.css');
+	SppagebuilderHelperSite::addStylesheet('font-awesome-v4-shims.css');
 }
-$doc->addStyleSheet(JUri::base(true).'/components/com_sppagebuilder/assets/css/animate.min.css');
-$doc->addStyleSheet(JUri::base(true).'/components/com_sppagebuilder/assets/css/sppagebuilder.css');
-$doc->addScript(JUri::base(true).'/components/com_sppagebuilder/assets/js/jquery.parallax.js');
-$doc->addScript(JUri::base(true).'/components/com_sppagebuilder/assets/js/sppagebuilder.js');
+
+if (!$component_params->get('disableanimatecss', 0))
+{
+	SppagebuilderHelperSite::addStylesheet('animate.min.css');
+}
+
+if (!$component_params->get('disablecss', 0))
+{
+	SppagebuilderHelperSite::addStylesheet('sppagebuilder.css');
+}
+
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/jquery.parallax.js', ['version' => SppagebuilderHelperSite::getVersion(true)] );
+HTMLHelper::_('script', 'components/com_sppagebuilder/assets/js/sppagebuilder.js', ['version' => SppagebuilderHelperSite::getVersion(true)], ['defer' => true]);
 ?>
 <div class="mod-sppagebuilder <?php echo $moduleclass_sfx ?> sp-page-builder" data-module_id="<?php echo $module->id; ?>">
 	<div class="page-content">

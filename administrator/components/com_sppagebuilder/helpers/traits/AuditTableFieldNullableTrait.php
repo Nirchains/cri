@@ -87,7 +87,7 @@ trait AuditTableFieldNullableTrait
 
 			foreach ($mismatches as $table => $mismatch)
 			{
-				$this->fixedBuffer[] = "<h4><span class='maintenance-issue-icon'><span class='fa fa-times'></span></span> Table <code>" . $table . "</code></h4>";
+				$this->fixedBuffer[] = "<h4><span class='maintenance-issue-resolved-icon'><span class='fa fa-check'></span></span> Table <code>" . $table . "</code></h4>";
 				$this->fixedBuffer[] = "<ul>";
 
 				foreach ($mismatch as $field => $type)

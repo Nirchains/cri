@@ -13,6 +13,126 @@ $row_settings = array(
 	'title' => 'Section',
 	'attr' 	=> array(
 		'general' => array(
+			'admin_label'=>array(
+				'type'=>'text',
+				'title'=>JText::_('COM_SPPAGEBUILDER_ADMIN_LABEL'),
+				'desc'=>JText::_('COM_SPPAGEBUILDER_ADMIN_LABEL_DESC'),
+				'std'=>''
+			),
+
+			'separator1'=>array(
+				'type'=>'separator',
+				'title'=>JText::_('Title Options')
+			),
+
+			'title'=>array(
+				'type'=>'textarea',
+				'title'=>JText::_('COM_SPPAGEBUILDER_SECTION_TITLE'),
+				'desc'=>JText::_('COM_SPPAGEBUILDER_SECTION_TITLE_DESC'),
+				'css'=> 'min-height: 80px;',
+				'std'=>''
+			),
+
+			'heading_selector'=>array(
+				'type'=>'select',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS'),
+				'desc'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_DESC'),
+				'values'=>array(
+					'h1'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H1'),
+					'h2'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H2'),
+					'h3'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H3'),
+					'h4'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H4'),
+					'h5'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H5'),
+					'h6'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H6'),
+				),
+				'std'=>'h3',
+				'depends' => array(
+					array('title', '!=', ''),
+				),
+			),
+
+			'title_fontsize'=>array(
+				'type'=>'slider',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_TITLE_FONT_SIZE'),
+				'std'=>'',
+				'depends' => array(
+					array('title', '!=', ''),
+				),
+				'responsive' => true,
+				'max'=>500
+			),
+
+			'title_fontweight'=>array(
+				'type'=>'text',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_TITLE_FONT_WEIGHT'),
+				'std'=>'',
+				'depends' => array(
+					array('title', '!=', ''),
+				),
+			),
+
+			'title_text_color'=>array(
+				'type'=>'color',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_TITLE_TEXT_COLOR'),
+				'depends' => array(
+					array('title', '!=', ''),
+				),
+			),
+
+			'title_margin_top'=>array(
+				'type'=>'number',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_MARGIN_TOP'),
+				'placeholder'=>'10',
+				'depends' => array(
+					array('title', '!=', ''),
+				),
+				'responsive' => true
+			),
+
+			'title_margin_bottom'=>array(
+				'type'=>'number',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_MARGIN_BOTTOM'),
+				'placeholder'=>'10',
+				'depends' => array(
+					array('title', '!=', ''),
+				),
+				'responsive' => true
+			),
+
+			'separator2'=>array(
+				'type'=>'separator',
+				'title'=>JText::_('Subtitle Options')
+			),
+
+			'subtitle'=>array(
+				'type'=>'textarea',
+				'title'=>JText::_('COM_SPPAGEBUILDER_SECTION_SUBTITLE'),
+				'desc'=>JText::_('COM_SPPAGEBUILDER_SECTION_SUBTITLE_DESC'),
+				'css'=> 'min-height: 120px;',
+			),
+
+			'subtitle_fontsize'=>array(
+				'type'=>'slider',
+				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_SUB_TITLE_FONT_SIZE'),
+				'desc'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_SUB_TITLE_FONT_SIZE_DESC'),
+				'responsive'=>true,
+				'depends' => array(
+					array('subtitle', '!=', ''),
+				),
+			),
+
+			'title_position'=>array(
+				'type'=>'select',
+				'title'=>JText::_('COM_SPPAGEBUILDER_TITLE_SUBTITLE_POSITION'),
+				'desc'=>JText::_('COM_SPPAGEBUILDER_TITLE_SUBTITLE_POSITION_DESC'),
+				'values'=>array(
+					'sppb-text-left'=>JText::_('COM_SPPAGEBUILDER_LEFT'),
+					'sppb-text-center'=>JText::_('COM_SPPAGEBUILDER_CENTER'),
+					'sppb-text-right'=>JText::_('COM_SPPAGEBUILDER_RIGHT')
+				),
+				'std'=>'sppb-text-center',
+			),
+
 			'columns_align_center'=>array(
 				'type'=>'checkbox',
 				'title'=>JText::_('COM_SPPAGEBUILDER_ROW_COLUMNS_ALIGN_CENTER'),
@@ -909,128 +1029,6 @@ $row_settings = array(
 				'desc'=>JText::_('COM_SPPAGEBUILDER_ANIMATION_DELAY_DESC'),
 				'std'=>'0',
 				'placeholder'=>'300',
-			),
-		),
-
-		'advanced' => array(
-			'admin_label'=>array(
-				'type'=>'text',
-				'title'=>JText::_('COM_SPPAGEBUILDER_ADMIN_LABEL'),
-				'desc'=>JText::_('COM_SPPAGEBUILDER_ADMIN_LABEL_DESC'),
-				'std'=>''
-			),
-
-			'separator1'=>array(
-				'type'=>'separator',
-				'title'=>JText::_('Title Options')
-			),
-
-			'title'=>array(
-				'type'=>'textarea',
-				'title'=>JText::_('COM_SPPAGEBUILDER_SECTION_TITLE'),
-				'desc'=>JText::_('COM_SPPAGEBUILDER_SECTION_TITLE_DESC'),
-				'css'=> 'min-height: 80px;',
-				'std'=>''
-			),
-
-			'heading_selector'=>array(
-				'type'=>'select',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS'),
-				'desc'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_DESC'),
-				'values'=>array(
-					'h1'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H1'),
-					'h2'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H2'),
-					'h3'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H3'),
-					'h4'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H4'),
-					'h5'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H5'),
-					'h6'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_HEADINGS_H6'),
-				),
-				'std'=>'h3',
-				'depends' => array(
-					array('title', '!=', ''),
-				),
-			),
-
-			'title_fontsize'=>array(
-				'type'=>'slider',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_TITLE_FONT_SIZE'),
-				'std'=>'',
-				'depends' => array(
-					array('title', '!=', ''),
-				),
-				'responsive' => true,
-				'max'=>500
-			),
-
-			'title_fontweight'=>array(
-				'type'=>'text',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_TITLE_FONT_WEIGHT'),
-				'std'=>'',
-				'depends' => array(
-					array('title', '!=', ''),
-				),
-			),
-
-			'title_text_color'=>array(
-				'type'=>'color',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_TITLE_TEXT_COLOR'),
-				'depends' => array(
-					array('title', '!=', ''),
-				),
-			),
-
-			'title_margin_top'=>array(
-				'type'=>'number',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_MARGIN_TOP'),
-				'placeholder'=>'10',
-				'depends' => array(
-					array('title', '!=', ''),
-				),
-				'responsive' => true
-			),
-
-			'title_margin_bottom'=>array(
-				'type'=>'number',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_MARGIN_BOTTOM'),
-				'placeholder'=>'10',
-				'depends' => array(
-					array('title', '!=', ''),
-				),
-				'responsive' => true
-			),
-
-			'separator2'=>array(
-				'type'=>'separator',
-				'title'=>JText::_('Subtitle Options')
-			),
-
-			'subtitle'=>array(
-				'type'=>'textarea',
-				'title'=>JText::_('COM_SPPAGEBUILDER_SECTION_SUBTITLE'),
-				'desc'=>JText::_('COM_SPPAGEBUILDER_SECTION_SUBTITLE_DESC'),
-				'css'=> 'min-height: 120px;',
-			),
-
-			'subtitle_fontsize'=>array(
-				'type'=>'slider',
-				'title'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_SUB_TITLE_FONT_SIZE'),
-				'desc'=>JText::_('COM_SPPAGEBUILDER_GLOBAL_SUB_TITLE_FONT_SIZE_DESC'),
-				'responsive'=>true,
-				'depends' => array(
-					array('subtitle', '!=', ''),
-				),
-			),
-
-			'title_position'=>array(
-				'type'=>'select',
-				'title'=>JText::_('COM_SPPAGEBUILDER_TITLE_SUBTITLE_POSITION'),
-				'desc'=>JText::_('COM_SPPAGEBUILDER_TITLE_SUBTITLE_POSITION_DESC'),
-				'values'=>array(
-					'sppb-text-left'=>JText::_('COM_SPPAGEBUILDER_LEFT'),
-					'sppb-text-center'=>JText::_('COM_SPPAGEBUILDER_CENTER'),
-					'sppb-text-right'=>JText::_('COM_SPPAGEBUILDER_RIGHT')
-				),
-				'std'=>'sppb-text-center',
 			),
 		)
 	)

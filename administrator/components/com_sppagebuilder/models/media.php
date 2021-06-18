@@ -219,7 +219,7 @@ class SppagebuilderModelMedia extends JModelList
 			die(json_encode($output));
 		}
         
-		$images = JFolder::files(JPATH_ROOT . $path, '.png|.jpg|.gif|.svg', false, true);
+		$images = JFolder::files(JPATH_ROOT . $path, '.png|.jpg|.gif|.svg|.pdf|.webp', false, true);
 		$folders_list = JFolder::folders(JPATH_ROOT . $path, '.', false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', '_spmedia_thumbs'));
 		$folders = self::listFolderTree(JPATH_ROOT . '/' . $file_path, '.');
 

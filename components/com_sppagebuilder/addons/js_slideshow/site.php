@@ -1705,6 +1705,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 
 	 public static function getTemplate(){
 		 $output = '
+		 
 		 <style type="text/css">
 			<# _.each (data.slideshow_items, function(item_value, item_key) { 
 				var slider_img = {}
@@ -2103,7 +2104,6 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 
 				<# if(!_.isEmpty(item_value.slideshow_inner_items)){
 					_.each(item_value.slideshow_inner_items, function(inner_value, inner_item_key){
-
 						let inner_uniqid = `#sp-slider-inner-item-${data.id}-num-${inner_item_key}-key`;
 				#>
 
@@ -2943,6 +2943,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 				if(!_.isEmpty(data.slideshow_items)){
 					_.each (data.slideshow_items, function(item_value, item_key) {
 						let uniqid = `sp-slider-item-${data.id}-num-${item_key}-key`;
+						let last_field_key = item_key;
 						let activeClass = "";
 						if(item_key==0){
 							activeClass = "active";
@@ -2971,6 +2972,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 								<div class="sp-slider-content-align-{{content_alignment}}">
 								<#
 								_.each(item_value.slideshow_inner_items, function(inner_value, inner_item_key){
+									let last_field_inner_key = `slideshow_inner_items-${inner_item_key}`;
 									let inner_uniqid = `sp-slider-inner-item-${data.id}-num-${inner_item_key}-key`;
 									let animation_timing_function = (!_.isEmpty(inner_value.animation_timing_function) && inner_value.animation_timing_function) ? inner_value.animation_timing_function : "";
 									let animation_cubic_bezier_value = (!_.isEmpty(inner_value.animation_cubic_bezier_value) && inner_value.animation_cubic_bezier_value) ? inner_value.animation_cubic_bezier_value.replace(/\s/g,"") : "";
@@ -3040,7 +3042,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 
 									if(inner_value.content_type == "text_content"){
 								#>
-										<div id="{{inner_uniqid}}" class="sppb-sp-slider-text sp-editable-content {{content_class}}" data-id={{data.id}} data-fieldName="content_text" data-layer="true" data-animation={{animationJson}}>
+										<div id="{{inner_uniqid}}" class="sppb-sp-slider-text sp-editable-content {{content_class}}" data-id={{data.id}} data-fieldName="{{last_field_key}}-{{last_field_inner_key}}-content_text" data-layer="true" data-animation={{animationJson}}>
 											{{{inner_value.content_text}}}
 										</div>
 									<# } else if(inner_value.content_type == "image_content"){ #>
@@ -3077,6 +3079,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 											<div class="sp-slider-content-align-{{content_alignment}}">
 												<#
 												_.each(item_value.slideshow_inner_items, function(inner_value, inner_item_key){
+                          let last_field_inner_key = `slideshow_inner_items-${inner_item_key}`;
 													let inner_uniqid = `sp-slider-inner-item-${data.id}-num-${inner_item_key}-key`;
 													let animation_timing_function = (!_.isEmpty(inner_value.animation_timing_function) && inner_value.animation_timing_function) ? inner_value.animation_timing_function : "";
 													let animation_cubic_bezier_value = (!_.isEmpty(inner_value.animation_cubic_bezier_value) && inner_value.animation_cubic_bezier_value) ? inner_value.animation_cubic_bezier_value.replace(/\s/g,"") : "";
@@ -3146,7 +3149,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 				
 													if(inner_value.content_type == "text_content"){
 												#>
-														<div id="{{inner_uniqid}}" class="sppb-sp-slider-text sp-editable-content {{content_class}}" data-id={{data.id}} data-fieldName="content_text" data-layer="true" data-layer="true" data-animation={{animationJson}}>
+														<div id="{{inner_uniqid}}" class="sppb-sp-slider-text sp-editable-content {{content_class}}" data-id={{data.id}} data-fieldName="{{last_field_key}}-{{last_field_inner_key}}-content_text" data-layer="true" data-layer="true" data-animation={{animationJson}}>
 															{{{inner_value.content_text}}}
 														</div>
 													<# } else if(inner_value.content_type == "btn_content"){ #>
@@ -3177,6 +3180,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 											<div class="sp-slider-image-align-{{image_content_alignment}}">
 												<#
 												_.each(item_value.slideshow_inner_items, function(inner_value, inner_item_key){
+                          let last_field_inner_key = `slideshow_inner_items-${inner_item_key}`;
 													let inner_uniqid = `sp-slider-inner-item-${data.id}-num-${inner_item_key}-key`;
 													let animation_timing_function = (!_.isEmpty(inner_value.animation_timing_function) && inner_value.animation_timing_function) ? inner_value.animation_timing_function : "";
 													let animation_cubic_bezier_value = (!_.isEmpty(inner_value.animation_cubic_bezier_value) && inner_value.animation_cubic_bezier_value) ? inner_value.animation_cubic_bezier_value.replace(/\s/g,"") : "";
@@ -3240,6 +3244,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 											<div class="sp-slider-image-align-{{image_content_alignment}}">
 												<#
 												_.each(item_value.slideshow_inner_items, function(inner_value, inner_item_key){
+                          let last_field_inner_key = `slideshow_inner_items-${inner_item_key}`;
 													let inner_uniqid = `sp-slider-inner-item-${data.id}-num-${inner_item_key}-key`;
 													let animation_timing_function = (!_.isEmpty(inner_value.animation_timing_function) && inner_value.animation_timing_function) ? inner_value.animation_timing_function : "";
 													let animation_cubic_bezier_value = (!_.isEmpty(inner_value.animation_cubic_bezier_value) && inner_value.animation_cubic_bezier_value) ? inner_value.animation_cubic_bezier_value.replace(/\s/g,"") : "";
@@ -3302,6 +3307,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 											<div class="sp-slider-content-align-{{content_alignment}}">
 												<#
 												_.each(item_value.slideshow_inner_items, function(inner_value, inner_item_key){
+                          let last_field_inner_key = `slideshow_inner_items-${inner_item_key}`;
 													let inner_uniqid = `sp-slider-inner-item-${data.id}-num-${inner_item_key}-key`;
 													let animation_timing_function = (!_.isEmpty(inner_value.animation_timing_function) && inner_value.animation_timing_function) ? inner_value.animation_timing_function : "";
 													let animation_cubic_bezier_value = (!_.isEmpty(inner_value.animation_cubic_bezier_value) && inner_value.animation_cubic_bezier_value) ? inner_value.animation_cubic_bezier_value.replace(/\s/g,"") : "";
@@ -3371,7 +3377,7 @@ class SppagebuilderAddonJs_slideshow extends SppagebuilderAddons {
 				
 													if(inner_value.content_type == "text_content"){
 												#>
-														<div id="{{inner_uniqid}}" class="sppb-sp-slider-text sp-editable-content {{content_class}}" data-id={{data.id}} data-fieldName="content_text" data-layer="true" data-layer="true" data-animation={{animationJson}}>
+														<div id="{{inner_uniqid}}" class="sppb-sp-slider-text sp-editable-content {{content_class}}" data-id={{data.id}} data-fieldName="{{last_field_key}}-{{last_field_inner_key}}-content_text" data-layer="true" data-layer="true" data-animation={{animationJson}}>
 															{{{inner_value.content_text}}}
 														</div>
 													<# } else if(inner_value.content_type == "btn_content"){ #>

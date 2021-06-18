@@ -23,14 +23,17 @@ class  plgSystemSppagebuilder extends JPlugin {
     $app = Factory::getApplication();
     if($app->isClient('administrator')) {
       $integration = self::getIntegration();
-      if(!$integration) return;
+      
+      if(!$integration) {
+        return;
+      }
 
       $input = $app->input;
       $option = $input->get('option', '', 'STRING');
       $view = $input->get('view', '', 'STRING');
       $layout = $input->get('layout', '', 'STRING');
 
-      if( $view != $integration['view'] && $option != 'com_' . $integration['group'] )
+      if( !($option == 'com_' . $integration['group'] && $view == $integration['view']) )
       {
         return;
       }
@@ -42,18 +45,17 @@ class  plgSystemSppagebuilder extends JPlugin {
       require_once JPATH_ROOT .'/administrator/components/com_sppagebuilder/builder/classes/config.php';
 
       self::loadPageBuilderLanguage();
-
-      HTMLHelper::_('jquery.framework');
-			SppagebuilderHelper::loadAssets('css');
+      
+      SppagebuilderHelper::loadAssets('css');
+      SppagebuilderHelper::addStylesheet('react-select.css');
 
       $doc = Factory::getDocument();
       $params = JComponentHelper::getParams('com_sppagebuilder');
-      $doc->addStylesheet( JURI::base(true) . '/components/com_sppagebuilder/assets/css/react-select.css' );
       
-      $doc->addScript( JURI::root(true) . '/plugins/system/sppagebuilder/assets/js/init.js' );
+      HTMLHelper::_('jquery.framework');
+      $doc->addScript( JURI::root(true) . '/plugins/system/sppagebuilder/assets/js/init.js?' . SppagebuilderHelper::getVersion(true) );
 
       //SppagebuilderHelper::loadEditor();
-
       if(JVERSION < 4)
       {
         $doc->addScriptdeclaration('var tinyTheme="modern";');
@@ -64,7 +66,7 @@ class  plgSystemSppagebuilder extends JPlugin {
         $doc->addStyledeclaration('.tox-tinymce-aux {z-index: 130012 !important;}');
       }
 
-      $doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/script.js' );
+      $doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/script.js?' . SppagebuilderHelper::getVersion(true) );
       $doc->addScriptdeclaration('var pagebuilder_base="' . JURI::root() . '";');
 
       // Addon List Initialize
@@ -181,7 +183,10 @@ class  plgSystemSppagebuilder extends JPlugin {
 
     if($app->isClient('administrator')) {
       $integration = self::getIntegration();
-      if(!$integration) return;
+      
+      if(!$integration) {
+        return;
+      }
 
       $input = $app->input;
       $option = $input->get('option', '', 'STRING');
@@ -189,7 +194,12 @@ class  plgSystemSppagebuilder extends JPlugin {
       $layout = $input->get('layout', '', 'STRING');
       $id = $input->get($integration['id_alias'], 0, 'INT');
 
-      if( $view != $integration['view'] && $option != 'com_' . $integration['group'] )
+      if( !($option == 'com_' . $integration['group'] && $view == $integration['view']) )
+      {
+        return;
+      }
+
+      if(isset($integration['frontend_only']) && $integration['frontend_only'])
       {
         return;
       }
@@ -213,7 +223,7 @@ class  plgSystemSppagebuilder extends JPlugin {
       $body = str_replace('</form>', '<input type="hidden" id="jform_attribs_sppagebuilder_active" name="jform[attribs][sppagebuilder_active]" value="'. $pagebuilder_enbaled .'"></form>'. "\n", $body);
 
       // Add script
-      $body = str_replace('</body>', '<script type="text/javascript" src="' . JURI::base(true) . '/components/com_sppagebuilder/assets/js/engine.js"></script>' ."\n</body>", $body);
+      $body = str_replace('</body>', '<script type="text/javascript" src="' . JURI::base(true) . '/components/com_sppagebuilder/assets/js/engine.js?' . SppagebuilderHelper::getVersion(true) . '"></script>' ."\n</body>", $body);
       $app->setBody($body);
     }
   }

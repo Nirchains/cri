@@ -201,15 +201,15 @@ if ($saveOrder && !empty($this->items))
 														<span title="<?php echo Text::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
 													<?php endif; ?>
 
+													<a class="btn btn-default btn-sm sp-pagebuilder-btn-preview-page" target="_blank" href="<?php echo $item->preview; ?>" style="margin: 0 5px;"><?php echo JText::_('COM_SPPAGEBUILDER_PREVIEW'); ?></a>
+													<?php if ($canEdit || $canEditOwn) : ?>
+														<a class="btn btn-primary btn-sm sp-pagebuilder-btn-frontend-editor" target="_blank" href="<?php echo $item->frontend_edit; ?>"><?php echo JText::_('COM_SPPAGEBUILDER_FRONTEND_EDITOR'); ?></a>
+													<?php endif; ?>
+
 													<?php if(isset($item->category_title) && $item->category_title): ?>
 														<div class="small">
 															<?php echo JText::_('JCATEGORY') . ": " . $this->escape($item->category_title); ?>
 														</div>
-													<?php endif; ?>
-
-													<a class="btn btn-default btn-sm sp-pagebuilder-btn-preview-page" target="_blank" href="<?php echo $item->preview; ?>" style="margin: 0 5px;"><?php echo JText::_('COM_SPPAGEBUILDER_PREVIEW'); ?></a>
-													<?php if ($canEdit || $canEditOwn) : ?>
-														<a class="btn btn-primary btn-sm sp-pagebuilder-btn-frontend-editor" target="_blank" href="<?php echo $item->frontend_edit; ?>"><?php echo JText::_('COM_SPPAGEBUILDER_FRONTEND_EDITOR'); ?></a>
 													<?php endif; ?>
 												</th>
 

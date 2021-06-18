@@ -27,38 +27,38 @@ class SppagebuilderModelPage extends JModelAdmin {
 
         $jinput = JFactory::getApplication()->input;
 
-    		$id = $jinput->get('id', 0);
+        $id = $jinput->get('id', 0);
 
-    		// Determine correct permissions to check.
-    		if ($this->getState('page.id'))
-    		{
-    			$id = $this->getState('page.id');
+        // Determine correct permissions to check.
+        if ($this->getState('page.id'))
+        {
+            $id = $this->getState('page.id');
 
-    			// Existing record. Can only edit in selected categories.
-    			$form->setFieldAttribute('catid', 'action', 'core.edit');
+            // Existing record. Can only edit in selected categories.
+            $form->setFieldAttribute('catid', 'action', 'core.edit');
 
-    			// Existing record. Can only edit own pages in selected categories.
-    			$form->setFieldAttribute('catid', 'action', 'core.edit.own');
-    		}
-    		else
-    		{
-    			// New record. Can only create in selected categories.
-    			$form->setFieldAttribute('catid', 'action', 'core.create');
-    		}
+            // Existing record. Can only edit own pages in selected categories.
+            $form->setFieldAttribute('catid', 'action', 'core.edit.own');
+        }
+        else
+        {
+            // New record. Can only create in selected categories.
+            $form->setFieldAttribute('catid', 'action', 'core.create');
+        }
 
-    		$user = JFactory::getUser();
+        $user = JFactory::getUser();
 
-            // Modify the form based on Edit State access controls.
-    		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_sppagebuilder.page.' . (int) $id))
-    			|| ($id == 0 && !$user->authorise('core.edit.state', 'com_sppagebuilder')))
-    		{
-    			// Disable fields for display.
-    			$form->setFieldAttribute('published', 'disabled', 'true');
+        // Modify the form based on Edit State access controls.
+        if ($id != 0 && (!$user->authorise('core.edit.state', 'com_sppagebuilder.page.' . (int) $id))
+            || ($id == 0 && !$user->authorise('core.edit.state', 'com_sppagebuilder')))
+        {
+            // Disable fields for display.
+            $form->setFieldAttribute('published', 'disabled', 'true');
 
-    			// Disable fields while saving.
-    			// The controller has already verified this is an page you can edit.
-    			$form->setFieldAttribute('published', 'filter', 'unset');
-    		}
+            // Disable fields while saving.
+            // The controller has already verified this is an page you can edit.
+            $form->setFieldAttribute('published', 'filter', 'unset');
+        }
 
         return $form;
     }

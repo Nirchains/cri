@@ -15,13 +15,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
-SppagebuilderHelper::loadAssets('css');
-
-
 $doc = Factory::getDocument();
 $input = Factory::getApplication()->input;
-$doc->addStyleSheet(JURI::root() . 'administrator/components/com_sppagebuilder/assets/css/maintenance.css');
-$doc->addScript(JURI::root() . 'administrator/components/com_sppagebuilder/assets/js/maintenance.js');
+
+SppagebuilderHelper::loadAssets('css');
+SppagebuilderHelper::addStylesheet('maintenance.css');
+HTMLHelper::_('jquery.framework');
+SppagebuilderHelper::addScript('maintenance.js');
 
 $maintenancePath = JPATH_ADMINISTRATOR . '/components/com_sppagebuilder/helpers/maintenance.php';
 

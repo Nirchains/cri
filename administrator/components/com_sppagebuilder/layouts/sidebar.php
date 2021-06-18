@@ -70,7 +70,7 @@ $sidebar_menus = array(
 
 // Load required javascript
 HTMLHelper::_('jquery.framework');
-$doc->addScript( JURI::base(true) . '/components/com_sppagebuilder/assets/js/sidebar.js' );
+SppagebuilderHelper::addScript('sidebar.js');
 ?>
 
 <?php if(JVERSION >= 4) : ?>

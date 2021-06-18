@@ -8,23 +8,24 @@
 //no direct accees
 defined ('_JEXEC') or die ('Restricted access');
 
-// import Joomla view library
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.view');
-
-if(!class_exists('SppagebuilderHelperSite'))
-{
-	require_once JPATH_ROOT . '/components/com_sppagebuilder/helpers/helper.php';
-}
 
 class SppagebuilderViewPage extends JViewLegacy
 {
 
 	protected $item;
+	protected $canEdit;
 
 	function display( $tpl = null )
 	{
 
+		$user = Factory::getUser();
 		$this->item = $this->get('Item');
+		$this->canEdit = $user->authorise('core.edit', 'com_sppagebuilder') ||
+			$user->authorise('core.edit', 'com_sppagebuilder.page.' . $this->item->id) ||
+			($user->authorise('core.edit.own', 'com_sppagebuilder.page.' . $this->item->id) && $this->item->created_by == $user->id);
+		$this->checked_out = ($this->item->checked_out == 0 || $this->item->checked_out == $user->id);
 
 		if (count($errors = (array) $this->get('Errors')))
 		{

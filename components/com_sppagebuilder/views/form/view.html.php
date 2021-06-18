@@ -16,11 +16,6 @@ use Joomla\CMS\Uri\Uri;
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-if(!class_exists('SppagebuilderHelperSite'))
-{
-	require_once JPATH_ROOT . '/components/com_sppagebuilder/helpers/helper.php';
-}
-
 class SppagebuilderViewForm extends JViewLegacy
 {
 	protected $form;
@@ -49,10 +44,16 @@ class SppagebuilderViewForm extends JViewLegacy
 		$item_info  = SppagebuilderModelPage::getPageInfoById($pageid);
 		$authorised = $user->authorise('core.edit', 'com_sppagebuilder.page.' . $pageid) || ($user->authorise('core.edit.own',   'com_sppagebuilder.page.' . $pageid) && $item_info->created_by == $user->id);
 
+		// checkout
+		if( !($this->item->checked_out == 0 || $this->item->checked_out == $user->id) )
+		{
+			$app->redirect($this->item->link, Text::_('COM_SPPAGEBUILDER_ERROR_CHECKED_IN'), 'warning');
+			return false;
+		}
+
 		if ($authorised !== true)
 		{
-			$app->enqueueMessage(Text::_('COM_SPPAGEBUILDER_ERROR_EDIT_PERMISSION'), 'error');
-			$app->setHeader('status', 403, true);
+			$app->redirect($this->item->link, Text::_('COM_SPPAGEBUILDER_ERROR_EDIT_PERMISSION'), 'warning');
 			return false;
 		}
 
